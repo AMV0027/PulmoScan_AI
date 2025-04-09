@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { FaUpload, FaTimes, FaFileImage } from "react-icons/fa";
+import { FaUpload, FaTimes, FaFileImage, FaFolder } from "react-icons/fa";
 
 const steps = [
   "Analyzing radiograph...",
@@ -7,11 +7,21 @@ const steps = [
   "Performing deep learning...",
 ];
 
+const sampleImages = [
+  "normal_1.jpg",
+  "normal_2.jpg",
+  "lung_opacity_1.jpg",
+  "lung_opacity_2.jpg",
+  "pneumonia_1.jpg",
+  "pneumonia_2.jpg",
+];
+
 const UploadSection = ({ setResult, setLoadingStep }) => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [showSampleImages, setShowSampleImages] = useState(false);
 
   const handleDrag = useCallback((e) => {
     e.preventDefault();
@@ -46,6 +56,18 @@ const UploadSection = ({ setResult, setLoadingStep }) => {
     };
   }, [previewUrl]);
 
+  const handleSampleSelect = async (filename) => {
+    try {
+      const response = await fetch(`/samples/${filename}`);
+      const blob = await response.blob();
+      const file = new File([blob], filename, { type: blob.type });
+      handleFile(file);
+      setShowSampleImages(false);
+    } catch (error) {
+      alert("Failed to load sample image");
+    }
+  };
+
   const handleUpload = async () => {
     if (!file) return alert("Please select an image");
 
@@ -76,6 +98,52 @@ const UploadSection = ({ setResult, setLoadingStep }) => {
 
   return (
     <div className="flex flex-col items-center space-y-6 w-full max-w-3xl">
+      {/* Sample Images Button */}
+      <button
+        onClick={() => setShowSampleImages(true)}
+        className="fixed -bottom-2 left-4 flex flex-row items-center gap-2 bg-blue-600 text-white p-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors"
+      >
+        <FaFolder className="w-4 h-4" /> Sample
+      </button>
+
+      {/* Sample Images Modal */}
+      {showSampleImages && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowSampleImages(false)}
+        >
+          <div className="bg-white rounded-xl p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+            <h3 className="text-xl font-semibold mb-4">Sample Images</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {sampleImages.map((filename) => (
+                <div
+                  key={filename}
+                  className="relative group cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSampleSelect(filename);
+                  }}
+                >
+                  <img
+                    src={`/samples/${filename}`}
+                    alt="Sample"
+                    className="w-full h-32 object-cover rounded-lg shadow-md group-hover:opacity-75 transition-opacity"
+                    onError={(e) =>
+                      console.error("Failed to load:", filename, e.target.src)
+                    }
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                      Select
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div
         className={`relative border-2 border-dashed ${
           dragActive ? "border-blue-500 bg-blue-50" : "border-blue-300"
