@@ -61,10 +61,10 @@ const TrainingMetricsChart = () => {
   });
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-4">
+    <div className="w-full max-w-5xl mx-auto">
       <div className="bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-3xl">
         {/* Header Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-2 md:p-6">
           <h1 className="text-2xl font-semibold text-white">
             Model Training Metrics
             <span className="block text-blue-100 text-sm mt-1 font-normal">
@@ -74,9 +74,9 @@ const TrainingMetricsChart = () => {
         </div>
 
         {chartData ? (
-          <div className="p-6 space-y-8">
+          <div className="p-4 md:p-6 space-y-8">
             {/* Accuracy Chart */}
-            <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
+            <div className="bg-blue-50 p-2 md:p-6 rounded-lg border border-blue-100">
               <div className="flex items-center space-x-2 mb-4">
                 <svg
                   className="w-5 h-5 text-blue-600"
@@ -95,44 +95,47 @@ const TrainingMetricsChart = () => {
                   Accuracy Metrics
                 </h2>
               </div>
-              <Line
-                data={buildChart(epochs, [
-                  {
-                    label: "DL performance",
-                    data: chartData.accuracyTop1,
-                    color: "rgb(59,130,246)",
-                  },
-                  {
-                    label: "Real Data",
-                    data: chartData.accuracyTop5,
-                    color: "rgb(34,197,94)",
-                  },
-                ])}
-                options={{
-                  responsive: true,
-                  plugins: {
-                    legend: {
-                      position: "top",
-                      labels: { color: "#1f2937" },
+              <div className="h-[300px]">
+                <Line
+                  data={buildChart(epochs, [
+                    {
+                      label: "DL performance",
+                      data: chartData.accuracyTop1,
+                      color: "rgb(59,130,246)",
                     },
-                  },
-                  scales: {
-                    y: {
-                      beginAtZero: false,
-                      grid: { color: "#e5e7eb" },
-                      ticks: { color: "#4b5563" },
+                    {
+                      label: "Real Data",
+                      data: chartData.accuracyTop5,
+                      color: "rgb(34,197,94)",
                     },
-                    x: {
-                      grid: { color: "#e5e7eb" },
-                      ticks: { color: "#4b5563" },
+                  ])}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        position: "top",
+                        labels: { color: "#1f2937" },
+                      },
                     },
-                  },
-                }}
-              />
+                    scales: {
+                      y: {
+                        beginAtZero: false,
+                        grid: { color: "#e5e7eb" },
+                        ticks: { color: "#4b5563" },
+                      },
+                      x: {
+                        grid: { color: "#e5e7eb" },
+                        ticks: { color: "#4b5563" },
+                      },
+                    },
+                  }}
+                />
+              </div>
             </div>
 
             {/* Loss Chart */}
-            <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
+            <div className="bg-blue-50 p-2 md:p-6 rounded-lg border border-blue-100">
               <div className="flex items-center space-x-2 mb-4">
                 <svg
                   className="w-5 h-5 text-blue-600"
@@ -151,40 +154,43 @@ const TrainingMetricsChart = () => {
                   Loss Metrics
                 </h2>
               </div>
-              <Line
-                data={buildChart(epochs, [
-                  {
-                    label: "Training Loss",
-                    data: chartData.trainLoss,
-                    color: "rgb(239,68,68)",
-                  },
-                  {
-                    label: "Validation Loss",
-                    data: chartData.valLoss,
-                    color: "rgb(251,191,36)",
-                  },
-                ])}
-                options={{
-                  responsive: true,
-                  plugins: {
-                    legend: {
-                      position: "top",
-                      labels: { color: "#1f2937" },
+              <div className="h-[300px]">
+                <Line
+                  data={buildChart(epochs, [
+                    {
+                      label: "Training Loss",
+                      data: chartData.trainLoss,
+                      color: "rgb(239,68,68)",
                     },
-                  },
-                  scales: {
-                    y: {
-                      beginAtZero: false,
-                      grid: { color: "#e5e7eb" },
-                      ticks: { color: "#4b5563" },
+                    {
+                      label: "Validation Loss",
+                      data: chartData.valLoss,
+                      color: "rgb(251,191,36)",
                     },
-                    x: {
-                      grid: { color: "#e5e7eb" },
-                      ticks: { color: "#4b5563" },
+                  ])}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        position: "top",
+                        labels: { color: "#1f2937" },
+                      },
                     },
-                  },
-                }}
-              />
+                    scales: {
+                      y: {
+                        beginAtZero: false,
+                        grid: { color: "#e5e7eb" },
+                        ticks: { color: "#4b5563" },
+                      },
+                      x: {
+                        grid: { color: "#e5e7eb" },
+                        ticks: { color: "#4b5563" },
+                      },
+                    },
+                  }}
+                />
+              </div>
             </div>
           </div>
         ) : (
