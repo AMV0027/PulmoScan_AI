@@ -98,7 +98,7 @@ const UploadSection = ({ setResult, setLoadingStep }) => {
             <img
               src={previewUrl}
               alt="Preview"
-              className="max-w-[600px] max-h-[400px] object-contain rounded-lg shadow-lg cursor-zoom-in mb-4"
+              className="max-w-[250px] max-h-[250px] md:max-w-[500px] md:max-h-[500px] object-contain rounded-lg shadow-lg cursor-zoom-in mb-4"
               onClick={() => setIsZoomed(true)}
             />
             <p className="text-sm text-gray-600 font-medium">{file.name}</p>
@@ -129,7 +129,7 @@ const UploadSection = ({ setResult, setLoadingStep }) => {
           <div className="relative max-w-full max-h-full">
             <button
               onClick={() => setIsZoomed(false)}
-              className="absolute -top-8 -right-8 text-blue-400 border-2 rounded-full shadow-inner border-blue-400 hover:text-white p-2  transition-colors"
+              className="absolute -top-14 -right-2 text-blue-400 border-2 rounded-full shadow-inner border-blue-400 hover:text-white p-2  transition-colors"
             >
               <FaTimes className="w-6 h-6" />
             </button>

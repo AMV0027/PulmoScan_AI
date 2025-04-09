@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UploadSection from "./components/UploadSection";
 import ResultCard from "./components/ResultCard";
 import TrainingMetricsChart from "./components/TrainingMetricsChart";
@@ -6,9 +6,36 @@ import TrainingMetricsChart from "./components/TrainingMetricsChart";
 function App() {
   const [result, setResult] = useState(null);
   const [loadingStep, setLoadingStep] = useState(null);
+  const [isServerOnline, setIsServerOnline] = useState(false);
+
+  useEffect(() => {
+    const checkServerHealth = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/health");
+        setIsServerOnline(response.ok);
+      } catch (error) {
+        setIsServerOnline(false);
+      }
+    };
+
+    checkServerHealth();
+    const interval = setInterval(checkServerHealth, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-8">
+      <div className="fixed bottom-4 right-4 flex items-center space-x-2 bg-white rounded-lg p-3 shadow-md">
+        <div
+          className={`h-3 w-3 rounded-full animate-pulse ${
+            isServerOnline ? "bg-green-500" : "bg-red-500"
+          }`}
+        ></div>
+        <span className="text-sm text-gray-600">
+          {isServerOnline ? "Server Online" : "Server Offline"}
+        </span>
+      </div>
+
       <div className="max-w-4xl mx-auto space-y-8">
         <header className="text-center space-y-2">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">

@@ -26,6 +26,11 @@ class PredictionResult(BaseModel):
 # Load model only once
 model = YOLO(r'C:\Lung-Disease-Prediction\final_project\backend\best.pt')
 
+@app.get("/health")
+async def health_check():
+    return {"status": "online", "message": "Server is running", "model_loaded": bool(model)}
+
+
 @app.post("/predict/", response_model=PredictionResult)
 async def predict_image(file: UploadFile = File(...)):
     # Save uploaded file to a temporary location
