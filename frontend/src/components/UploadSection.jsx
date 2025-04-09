@@ -127,7 +127,7 @@ const UploadSection = ({ setResult, setLoadingStep }) => {
                   <img
                     src={`/samples/${filename}`}
                     alt="Sample"
-                    className="w-full h-32 object-cover rounded-lg shadow-md group-hover:opacity-75 transition-opacity"
+                    className="w-full h-auto object-cover rounded-lg shadow-md group-hover:opacity-75 transition-opacity"
                     onError={(e) =>
                       console.error("Failed to load:", filename, e.target.src)
                     }
